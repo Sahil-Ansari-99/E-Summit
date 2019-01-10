@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_aboutus"
+            android:icon="@drawable/ic_aboutus"
+            android:title="About Us" />
+        <item
+            android:id="@+id/nav_events"
+            android:icon="@drawable/ic_events"
+            android:title="Events" />
+        <item
+            android:id="@+id/nav_speakers"
+            android:icon="@drawable/ic_speakers"
+            android:title="Speakers" />
+
+        <item
+            android:id="@+id/nav_esummit"
+            android:icon="@drawable/ic_esummit"
+            android:title="E-Summit" />
+
+        <item
+            android:id="@+id/nav_eupdates"
+            android:icon="@drawable/ic_eupdates"
+            android:title="E-Updates"/>
+
+        <item
+            android:id="@+id/nav_faq"
+            android:icon="@drawable/ic_faq"
+            android:title="FAQ" />
+
+        <item
+            android:id="@+id/nav_teams"
+            android:icon="@drawable/ic_teams"
+            android:title="Teams" />
+
+        <item android:title="Social" >
+            <menu>
+                <item
+                    android:id="@+id/nav_fb"
+                    android:icon="@drawable/ic_facebook"
+                    android:title="Facebook"/>
+
+                <item
+                    android:id="@+id/nav_twitter"
+                    android:icon="@drawable/ic_twitter"
+                    android:title="Twitter" />
+
+                <item
+                    android:id="@+id/nav_insta"
+                    android:icon="@drawable/ic_instagram"
+                    android:title="Instagram"/>
+
+            </menu>
+        </item>
+
+    </group>
+
+</menu>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">E-Summit</string>
+    <string name="events_upcoming">Upcoming Events</string>
+    <string name="events_second_title">Events</string>
+    <string name="home_first_head">Transcend Your Limits!</string>
+    <string name="home_date">8th-10th March</string>
+    <string name="home_venue">IC &amp; SR Building, IIT Madras</string>
+    <string name="our_story_head">Our Story</string>
+    <string name="our_story_content1">Given IIT Madras’ tryst with entrepreneurship and Indian \nEntrepreneurship’s tryst with destiny, it can be said with \nan air of pride that it would perhaps be an understatement \nto say just that the startups have begun to gain a strong foothold \nat the campus entrepreneurial ground in IIT Madras. Entrepreneurship Cell, IIT Madras has come long way \nand is now prepared to embark on a bigger and even more \nfruitful journey. This April, the 13th to 15th, E-Summit 2018 \nwas back again: IIT Madras’s annual flagship event focussed \nentirely on young entrepreneurship and entrepreneurial venture \nwherein a plethora of activities and interactions promise a \nfun-filled time to the future budding job-givers that one of the \nfinest campuses in the world is incubating. Undoubtedly, the one \nof the finest entrepreneurship summits in the country, this report seeks to identify what made E-Summit 2018 so special. </string>
+    <string name="events_dummy">A pool of knowledge where eminent business tycoons, startup experts and CEOs share their experience of life and entrepreneurial journey.</string>
+</resources>
