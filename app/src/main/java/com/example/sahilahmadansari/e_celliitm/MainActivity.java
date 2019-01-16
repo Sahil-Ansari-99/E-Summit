@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
                 adapter=new AnnouncementsAdapter(getApplicationContext(), itemList);
                 Log.e("Test", itemList.get(0).getTitle());
                 recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
             }
 
             @Override
