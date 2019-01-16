@@ -16,7 +16,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickLi
 
     public EventsViewHolder(@NonNull View itemView) {
         super(itemView);
-        eventsText=(TextView)itemView.findViewById(R.id.events_text);
+//        eventsText=(TextView)itemView.findViewById(R.id.events_text);
     }
 
     @Override
