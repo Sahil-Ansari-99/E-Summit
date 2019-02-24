@@ -1,6 +1,9 @@
 package com.example.sahilahmadansari.e_celliitm;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,10 +25,18 @@ import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.sahilahmadansari.e_celliitm.Adapters.AnnouncementsAdapter;
 import com.example.sahilahmadansari.e_celliitm.Adapters.CustomItemDecorator;
+import com.example.sahilahmadansari.e_celliitm.Agenda.AgendaMain;
+import com.example.sahilahmadansari.e_celliitm.LogIn.LogIn;
 import com.example.sahilahmadansari.e_celliitm.Model.AnnounceModel;
+import com.example.sahilahmadansari.e_celliitm.People.PeopleMain;
+import com.example.sahilahmadansari.e_celliitm.Sponsors.SponsorsMain;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -46,9 +57,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
     private List<AnnounceModel> itemList;
     private AnnouncementsAdapter adapter;
     public ActionBarDrawerToggle actionBarDrawerToggle;
+    public ProgressBar progressBar;
     Button exploreButton;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -61,22 +75,28 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar=(Toolbar)findViewById(R.id.home_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_nav_toggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        actionBarDrawerToggle=new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+        progressBar=(ProgressBar)findViewById(R.id.home_progress_bar);
 
-        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
-
-        actionBarDrawerToggle.syncState();
+//        actionBarDrawerToggle=new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
+//
+//        mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+//
+//        actionBarDrawerToggle.syncState();
 
         itemList=new ArrayList<>();
 
         recyclerView=(RecyclerView)findViewById(R.id.home_recyclerView);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, true);
-        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
+//        linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new CustomItemDecorator(this, DividerItemDecoration.VERTICAL, 36));
 
+        firebaseAuth=FirebaseAuth.getInstance();
+        firebaseUser=firebaseAuth.getCurrentUser();
         firebaseDatabase=FirebaseDatabase.getInstance();
         databaseReference=firebaseDatabase.getReference("Announcements");
 
@@ -96,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 adapter=new AnnouncementsAdapter(getApplicationContext(), itemList);
+                progressBar.setVisibility(View.GONE);
                 Log.e("Test", itemList.get(0).getTitle());
                 recyclerView.setAdapter(adapter);
             }
@@ -111,25 +132,81 @@ public class MainActivity extends AppCompatActivity {
         mNavView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                if(menuItem.getItemId()==R.id.nav_aboutus){
+                    menuItem.setChecked(true);
+                }
+
                 switch (menuItem.getItemId()){
+                    case R.id.nav_aboutus:{
+                        mDrawerLayout.closeDrawers();
+                        return true;
+                    }
                     case R.id.nav_events:{
-//                        startActivity(new Intent(getApplicationContext(),EventsMain.class));
+                        startActivity(new Intent(getApplicationContext(), AgendaMain.class));
+                        return true;
                     }
                     case R.id.nav_speakers:{
-
+                        return true;
                     }
-                    case R.id.nav_esummit:{
-
-                    }
-                    case R.id.nav_eupdates:{
-//                        startActivity(new Intent(getApplicationContext(),EUpdatesMain.class));
+                    case R.id.nav_sponsors:{
+                        startActivity(new Intent(getApplicationContext(), SponsorsMain.class));
                         return true;
                     }
                     case R.id.nav_faq:{
-
+                        return true;
                     }
                     case R.id.nav_teams:{
-
+                        return true;
+                    }
+                    case R.id.nav_logout:{
+                        firebaseAuth.signOut();
+                        Toast.makeText(getApplicationContext(), "Please Log In!", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getApplicationContext(), LogIn.class));
+                        return true;
+                    }
+                    case R.id.nav_fb:{
+                        boolean res=isFbInstalled(getApplicationContext().getPackageManager());
+                        String fbPageUrl="https://www.facebook.com/ECELLIITM";
+                        if(res){
+                            Uri uri=Uri.parse("fb://facewebmodal/f?href="+fbPageUrl);
+                            Intent fbIntent=new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(fbIntent);
+                        }else{
+                            Intent intent=new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://www.facebook.com/ECELLIITM"));
+                            startActivity(intent);
+                        }
+                        return true;
+                    }
+                    case R.id.nav_twitter:{
+                        boolean res=isTwitterInstalled(getApplicationContext().getPackageManager());
+                        if(res){
+                            Uri uri=Uri.parse("twitter://user?user_id=880364554240184320");
+                            Intent twitterIntent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(twitterIntent);
+                        }else{
+                            Intent intent=new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse("https://twitter.com/ecelliitm"));
+                            startActivity(intent);
+                        }
+                        return true;
+                    }
+                    case R.id.nav_insta:{
+                        boolean res=isInstaInstalled(getApplicationContext().getPackageManager());
+                        String instaUrl="https://www.instagram.com/ecell_iitm/";
+                        if(res){
+                            instaUrl = instaUrl.substring(0, instaUrl.length()-1);
+                            String instaUsername = instaUrl.substring(instaUrl.lastIndexOf("/")+1);
+                            Intent instaIntent=new Intent(Intent.ACTION_VIEW);
+                            instaIntent.setPackage("com.instagram.android");
+                            instaIntent.setData(Uri.parse("http://instagram.com/_u/" + instaUsername));
+                            startActivity(instaIntent);
+                        }else{
+                            Intent intent=new Intent(Intent.ACTION_VIEW);
+                            intent.setData(Uri.parse(instaUrl));
+                            startActivity(intent);
+                        }
+                        return true;
                     }
                 }
                 menuItem.setChecked(true);
@@ -146,8 +223,53 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         homeBottomNav=(BottomNavigationView)findViewById(R.id.home_bottom_nav);
+
+        homeBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.bottom_nav_home :
+                        break;
+
+                    case R.id.bottom_nav_agenda :
+                        startActivity(new Intent(getApplicationContext(), AgendaMain.class));
+                        break;
+
+                    case R.id.bottom_nav_people :
+                        startActivity(new Intent(getApplicationContext(), PeopleMain.class));
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
+    public boolean isFbInstalled(PackageManager pm){
+        try{
+            ApplicationInfo fbInfo=pm.getApplicationInfo("com.facebook.katana", 0);
+            return fbInfo.enabled;
+        }catch (PackageManager.NameNotFoundException e){
+            return false;
+        }
+    }
+
+    public boolean isTwitterInstalled(PackageManager pm){
+        try{
+            ApplicationInfo twitterInfo=pm.getApplicationInfo("com.twitter.android", 0);
+            return twitterInfo.enabled;
+        }catch (PackageManager.NameNotFoundException e){
+            return false;
+        }
+    }
+
+    public boolean isInstaInstalled(PackageManager pm){
+        try{
+            ApplicationInfo instaInfo=pm.getApplicationInfo("com.instagram.android", 0);
+            return instaInfo.enabled;
+        }catch (PackageManager.NameNotFoundException e){
+            return  false;
+        }
+    }
 
     public void setUpAdapter(){
         adapter=new AnnouncementsAdapter(this, itemList);
