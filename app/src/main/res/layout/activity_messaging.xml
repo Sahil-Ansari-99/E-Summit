@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.v7.widget.Toolbar
@@ -13,18 +14,12 @@
         app:titleTextColor="@color/colorWhite"
         android:background="@drawable/toolbar_gradient"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/messaging_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messaging_toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/messaging_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/layout_chatbox"
+            app:layout_constraintTop_toBottomOf="@+id/messaging_toolbar" />
 
     <!-- A horizontal line between the chatbox and RecyclerView -->
     <View

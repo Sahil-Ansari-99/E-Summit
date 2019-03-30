@@ -6,8 +6,7 @@
     <string name="home_date">8th-10th March</string>
     <string name="home_venue">IC &amp; SR Building, IIT Madras</string>
     <string name="our_story_head">Our Story</string>
-    <string name="our_story_content1">Given IIT Madras’ tryst with entrepreneurship and Indian \nEntrepreneurship’s tryst with destiny, it can be said with \nan air of pride that it would perhaps be an understatement \nto say just that the startups have begun to gain a strong foothold \nat the campus entrepreneurial ground in IIT Madras. Entrepreneurship Cell, IIT Madras has come long way \nand is now prepared to embark on a bigger and even more \nfruitful journey. This April, the 13th to 15th, E-Summit 2018 \nwas back again: IIT Madras’s annual flagship event focussed \nentirely on young entrepreneurship and entrepreneurial venture \nwherein a plethora of activities and interactions promise a \nfun-filled time to the future budding job-givers that one of the \nfinest campuses in the world is incubating. Undoubtedly, the one \nof the finest entrepreneurship summits in the country, this report seeks to identify what made E-Summit 2018 so special. </string>
-    <string name="events_dummy">A pool of knowledge where eminent business tycoons, startup experts and CEOs share their experience of life and entrepreneurial journey.</string>
+    <string name="loren_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
 </resources>

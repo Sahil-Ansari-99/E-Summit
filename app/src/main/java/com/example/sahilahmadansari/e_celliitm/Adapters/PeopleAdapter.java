@@ -9,7 +9,8 @@ import com.example.sahilahmadansari.e_celliitm.Agenda.Day1Fragment;
 import com.example.sahilahmadansari.e_celliitm.Agenda.Day2Fragment;
 import com.example.sahilahmadansari.e_celliitm.Agenda.Day3Fragment;
 import com.example.sahilahmadansari.e_celliitm.People.AttendeesFragment;
-import com.example.sahilahmadansari.e_celliitm.People.SentFragment;
+import com.example.sahilahmadansari.e_celliitm.People.MessagesFragment;
+import com.example.sahilahmadansari.e_celliitm.People.ReceivedFragment;
 
 public class PeopleAdapter extends FragmentPagerAdapter {
     private Context context;
@@ -26,9 +27,9 @@ public class PeopleAdapter extends FragmentPagerAdapter {
         switch (i){
             case 0: return new AttendeesFragment();
 
-            case 1: return new SentFragment();
+            case 1: return new MessagesFragment();
 
-            case 2: return new SentFragment();
+            case 2: return new ReceivedFragment();
 
             default: return null;
         }

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,7 @@ import com.example.sahilahmadansari.e_celliitm.People.AttendeeActivity;
 import com.example.sahilahmadansari.e_celliitm.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +42,7 @@ public class MessagingMain extends AppCompatActivity {
     FirebaseDatabase firebaseDatabase;
     FirebaseUser firebaseUser;
     FirebaseAuth firebaseAuth;
-    DatabaseReference currSentRef, userReceivedRef, messageRef;
+    DatabaseReference currSentRef, userReceivedRef, messageRef, receiverAllRef, userRef, receiverRef, currAllRef;
     List<Message> messageList;
     MessageAdapter adapter;
     RecyclerView recyclerView;
@@ -57,8 +59,8 @@ public class MessagingMain extends AppCompatActivity {
         userId=intent.getStringExtra("uid");
 
         toolbar=(Toolbar)findViewById(R.id.messaging_toolbar);
-        toolbar.setTitle(userName);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(userName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -79,28 +81,40 @@ public class MessagingMain extends AppCompatActivity {
 
         firebaseDatabase=FirebaseDatabase.getInstance();
 
-        messageRef=firebaseDatabase.getReference().child("Users").child(currId).child("messages").child("all").child(userId);
+        userRef=firebaseDatabase.getReference().child("Users").child(currId).child("messages");
+        receiverRef=firebaseDatabase.getReference().child("Users").child(userId).child("messages");
+
+        messageRef=userRef.child("all");
         messageRef.keepSynced(true);
 
-        currSentRef=firebaseDatabase.getReference().child("Users").child(currId).child("messages").child("sent").child(userId);
+        currSentRef=userRef.child("sent");
         currSentRef.keepSynced(true);
 
-        userReceivedRef=firebaseDatabase.getReference().child("Users").child(userId).child("messages").child("received").child(currId);
+        userReceivedRef=receiverRef.child("received");
         userReceivedRef.keepSynced(true);
 
-        messageRef.addValueEventListener(new ValueEventListener() {
+        receiverAllRef=receiverRef.child("all");
+        receiverAllRef.keepSynced(true);
+
+        currAllRef=messageRef.child(userId);
+        currAllRef.keepSynced(true);
+
+        messageRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 messageList.clear();
 
                 for(DataSnapshot postSnapshot : dataSnapshot.getChildren()){
                     HashMap<String, String> hashMap=new HashMap<>();
+                    Message message=postSnapshot.getValue(Message.class);
+                    messageList.add(message);
+                    Log.e("Test", message.getMessage());
 
-                    for(DataSnapshot ds : postSnapshot.getChildren()){
-                            hashMap.put(ds.getKey(), ds.getValue(String.class));
-                    }
-
-                    messageList.add(new Message(hashMap.get("message"), hashMap.get("sender"), hashMap.get("time")));
+//                    for(DataSnapshot ds : postSnapshot.getChildren()){
+//                            hashMap.put(ds.getKey(), ds.getValue(String.class));
+//                    }
+//
+//                    messageList.add(new Message(hashMap.get("message"), hashMap.get("sender"), hashMap.get("time")));
                 }
 
                 adapter=new MessageAdapter(getApplicationContext(), messageList, currId);
@@ -122,6 +136,22 @@ public class MessagingMain extends AppCompatActivity {
                 }
             }
         });
+
+        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+                if(i3<i7){
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(messageList.size()!=0) {
+                                recyclerView.smoothScrollToPosition(recyclerView.getAdapter().getItemCount() - 1);
+                            }
+                        }
+                    },100);
+                }
+            }
+        });
     }
 
     public void sendMessage(){
@@ -132,7 +162,6 @@ public class MessagingMain extends AppCompatActivity {
         DateFormat tFormat = new SimpleDateFormat("H:m");
         String messageTime = tFormat.format(currDate);
 
-        DatabaseReference newMessage=messageRef.push();
 
         HashMap<String, String> messageMap=new HashMap<>();
 
@@ -140,14 +169,20 @@ public class MessagingMain extends AppCompatActivity {
         messageMap.put("sender", currId);
         messageMap.put("time", messageTime);
 
-        newMessage.setValue(messageMap);
         messageBox.setText("");
 
-        DatabaseReference sentMessage=currSentRef.push();
+        DatabaseReference sentMessage=currSentRef.child(userId).push();
         sentMessage.setValue(messageMap);
 
-        DatabaseReference receivedMessage=userReceivedRef.push();
+        DatabaseReference receivedMessage=userReceivedRef.child(currId).push();
         receivedMessage.setValue(messageMap);
+
+        DatabaseReference receiverAllMessage=receiverAllRef.child(userId).push();
+        receiverAllMessage.setValue(messageMap);
+
+        DatabaseReference userAllRef=currAllRef.push();
+        userAllRef.setValue(messageMap);
+
     }
 
     @Override
@@ -159,10 +194,6 @@ public class MessagingMain extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(getApplicationContext(), AttendeeActivity.class);
-        intent.putExtra("id", userId);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
         finish();
     }
 }

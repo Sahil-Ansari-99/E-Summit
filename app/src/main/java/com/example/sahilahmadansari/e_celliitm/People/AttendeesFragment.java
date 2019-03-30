@@ -45,8 +45,8 @@ public class AttendeesFragment extends Fragment {
         v=inflater.inflate(R.layout.people_fragment, container, false);
         recyclerView=(RecyclerView)v.findViewById(R.id.people_fragment_rv);
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, true);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new CustomItemDecorator(getActivity(), DividerItemDecoration.VERTICAL, 36));

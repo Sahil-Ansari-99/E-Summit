@@ -31,10 +31,13 @@ import android.widget.Toast;
 import com.example.sahilahmadansari.e_celliitm.Adapters.AnnouncementsAdapter;
 import com.example.sahilahmadansari.e_celliitm.Adapters.CustomItemDecorator;
 import com.example.sahilahmadansari.e_celliitm.Agenda.AgendaMain;
+import com.example.sahilahmadansari.e_celliitm.FAQ.FAQMain;
 import com.example.sahilahmadansari.e_celliitm.LogIn.LogIn;
 import com.example.sahilahmadansari.e_celliitm.Model.AnnounceModel;
 import com.example.sahilahmadansari.e_celliitm.People.PeopleMain;
+import com.example.sahilahmadansari.e_celliitm.Speakers.SpeakersMain;
 import com.example.sahilahmadansari.e_celliitm.Sponsors.SponsorsMain;
+import com.example.sahilahmadansari.e_celliitm.StartupShowcase.StartupShowcase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     public ActionBarDrawerToggle actionBarDrawerToggle;
     public ProgressBar progressBar;
     Button exploreButton;
+    public static boolean isAppRunning=false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -89,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
         itemList=new ArrayList<>();
 
         recyclerView=(RecyclerView)findViewById(R.id.home_recyclerView);
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
-//        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, true);
+        linearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.addItemDecoration(new CustomItemDecorator(this, DividerItemDecoration.VERTICAL, 36));
@@ -146,16 +150,19 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     }
                     case R.id.nav_speakers:{
+                        startActivity(new Intent(getApplicationContext(), SpeakersMain.class));
                         return true;
                     }
                     case R.id.nav_sponsors:{
                         startActivity(new Intent(getApplicationContext(), SponsorsMain.class));
                         return true;
                     }
-                    case R.id.nav_faq:{
+                    case R.id.nav_startup:{
+                        startActivity(new Intent(getApplicationContext(), StartupShowcase.class));
                         return true;
                     }
-                    case R.id.nav_teams:{
+                    case R.id.nav_faq:{
+                        startActivity(new Intent(getApplicationContext(), FAQMain.class));
                         return true;
                     }
                     case R.id.nav_logout:{
@@ -242,6 +249,18 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        isAppRunning=true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isAppRunning=false;
     }
 
     public boolean isFbInstalled(PackageManager pm){

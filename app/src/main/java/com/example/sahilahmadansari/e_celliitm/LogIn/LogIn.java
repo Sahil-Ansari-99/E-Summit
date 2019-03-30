@@ -18,6 +18,7 @@ import android.widget.Toast;
 import android.support.v7.widget.Toolbar;
 
 import com.example.sahilahmadansari.e_celliitm.MainActivity;
+import com.example.sahilahmadansari.e_celliitm.ProfileEdit.ProfileEdit;
 import com.example.sahilahmadansari.e_celliitm.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -106,7 +107,7 @@ public class LogIn extends AppCompatActivity {
                         if(task.isSuccessful()){
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Log In Successful", Toast.LENGTH_LONG).show();
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            startActivity(new Intent(getApplicationContext(), ProfileEdit.class));
                         }else{
                             progressDialog.dismiss();
                             Toast.makeText(getApplicationContext(), "Log In Failed", Toast.LENGTH_LONG).show();

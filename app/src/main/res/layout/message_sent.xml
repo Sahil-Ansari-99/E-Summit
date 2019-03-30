@@ -16,7 +16,7 @@
         android:padding="8dp"
         android:text="Hi! I am good"
         android:textColor="@color/colorWhite"
-        android:textSize="10sp"
+        android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

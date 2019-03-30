@@ -1,16 +1,21 @@
 package com.example.sahilahmadansari.e_celliitm.Model;
 
-public class AgendaModel {
+import java.io.Serializable;
+import java.util.List;
+
+public class AgendaModel implements Serializable {
     String title;
     String time;
-    String duration;
+    String description;
     String venue;
+    List<Speakers> speakers;
 
-    public AgendaModel(String title, String time, String duration, String venue) {
+    public AgendaModel(String title, String time, String description, String venue, List<Speakers> speakers) {
         this.title = title;
         this.time = time;
-        this.duration = duration;
+        this.description = description;
         this.venue = venue;
+        this.speakers = speakers;
     }
 
     public String getTitle() {
@@ -21,11 +26,15 @@ public class AgendaModel {
         return time;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getDescription() {
+        return description;
     }
 
     public String getVenue() {
         return venue;
+    }
+
+    public List<Speakers> getSpeakers() {
+        return speakers;
     }
 }

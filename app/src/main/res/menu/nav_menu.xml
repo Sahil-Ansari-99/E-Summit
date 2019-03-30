@@ -17,17 +17,15 @@
         <item
             android:id="@+id/nav_sponsors"
             android:icon="@drawable/ic_sponsors"
-            android:title="Sponsors" />
+            android:title="Our Partners" />
+        <item
+            android:id="@+id/nav_startup"
+            android:icon="@drawable/ic_startup_showcase"
+            android:title="Startup Showcase" />
         <item
             android:id="@+id/nav_faq"
             android:icon="@drawable/ic_faq"
             android:title="FAQ" />
-
-        <item
-            android:id="@+id/nav_teams"
-            android:icon="@drawable/ic_teams"
-            android:title="Teams" />
-
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_teams"

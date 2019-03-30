@@ -2,11 +2,14 @@ package com.example.sahilahmadansari.e_celliitm.Adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.sahilahmadansari.e_celliitm.Model.SponsorsModel;
 import com.example.sahilahmadansari.e_celliitm.R;
@@ -38,6 +41,9 @@ public class SponsorsAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
         String imgUrl=sponsorsModel.getUrl();
 
         Picasso.with(mContext).load(imgUrl).into(placeViewHolder.mPlace);
+
+        placeViewHolder.sponsorName.setText(sponsorsModel.getName());
+        placeViewHolder.sponsorTitle.setText(sponsorsModel.getTitle());
     }
 
     @Override
@@ -49,10 +55,14 @@ public class SponsorsAdapter extends RecyclerView.Adapter<PlaceViewHolder> {
 class PlaceViewHolder extends RecyclerView.ViewHolder {
 
     ImageView mPlace;
+    TextView sponsorName, sponsorTitle;
 
     public PlaceViewHolder(View itemView) {
         super(itemView);
 
         mPlace = itemView.findViewById(R.id.sponsors_card_image);
+        sponsorName=itemView.findViewById(R.id.sponsors_card_name);
+        sponsorTitle=itemView.findViewById(R.id.sponsors_card_title);
     }
+
 }

@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import com.example.sahilahmadansari.e_celliitm.Adapters.AgendaDayAdapter;
 import com.example.sahilahmadansari.e_celliitm.Adapters.CustomItemDecorator;
 import com.example.sahilahmadansari.e_celliitm.Model.AgendaModel;
+import com.example.sahilahmadansari.e_celliitm.Model.Speakers;
 import com.example.sahilahmadansari.e_celliitm.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -65,12 +67,24 @@ public class Day1Fragment extends Fragment {
 
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     HashMap<String, String> hashMap=new HashMap<>();
+                    HashMap<String, String> speakersMap=new HashMap<>();
+                    List<Speakers> speakersList=new ArrayList<>();
 
                     for(DataSnapshot postSnapShot : ds.getChildren()){
-                        hashMap.put(postSnapShot.getKey(), postSnapShot.getValue(String.class));
+                        if(!postSnapShot.getKey().equals("speakers")) {
+                            hashMap.put(postSnapShot.getKey(), postSnapShot.getValue(String.class));
+                        }else{
+                            for(DataSnapshot snapshot : postSnapShot.getChildren()){
+                                for(DataSnapshot finalSnapShot : snapshot.getChildren()){
+                                    speakersMap.put(finalSnapShot.getKey(), finalSnapShot.getValue(String.class));
+                                    Log.e("Test", finalSnapShot.getValue(String.class));
+                                }
+                                speakersList.add(new Speakers(speakersMap.get("name"), speakersMap.get("designation")));
+                            }
+                        }
                     }
 
-                    itemList.add(new AgendaModel(hashMap.get("title"), hashMap.get("time"), hashMap.get("duration"), hashMap.get("venue")));
+                    itemList.add(new AgendaModel(hashMap.get("title"), hashMap.get("time"), hashMap.get("description"), hashMap.get("venue"), speakersList));
                 }
 
                 adapter=new AgendaDayAdapter(getActivity(), itemList);

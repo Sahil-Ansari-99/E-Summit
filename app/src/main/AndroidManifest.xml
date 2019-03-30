@@ -24,10 +24,38 @@
         <activity android:name=".People.PeopleMain"/>
         <activity android:name=".People.AttendeeActivity"/>
         <activity android:name=".Messaging.MessagingMain"/>
+        <activity android:name=".Agenda.AgendaIndividual"/>
+        <activity android:name=".Speakers.SpeakersMain"/>
+        <activity android:name=".FAQ.FAQMain"/>
+        <activity android:name=".StartupShowcase.StartupShowcase"/>
+        <activity android:name=".ProfileEdit.ProfileEdit"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/esummit_logo_black" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@drawable/ic_facebook" />
+
+        <service android:name=".NotificationService.NotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <service android:name=".NotificationService.InstanceIdService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>
